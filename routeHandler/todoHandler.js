@@ -2,11 +2,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const todoSchema = require('../schemas/todoSchema');
+const checkLogin = require('../middlewares/checkLogin');
+
 
 const Todo = new mongoose.model("Todo", todoSchema);
 
 // get all todos
-router.get('/', async(req, res) => {
+router.get('/', checkLogin, async(req, res) => {
+    console.log(req.username);
+    console.log(req.userId);
     await Todo.find({status: 'active'})
       .select({
         //   filds wants to show, hide
